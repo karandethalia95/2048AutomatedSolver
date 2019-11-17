@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2019-11-16T20:29:53Z" name="Default suite" finished-at="2019-11-16T20:30:08Z" duration-ms="14870">
+    <groups>
+    </groups>
+    <test started-at="2019-11-16T20:29:53Z" name="Default test" finished-at="2019-11-16T20:30:08Z" duration-ms="14870">
+      <class name="test.Test2048test">
+        <test-method is-config="true" signature="driver()[pri:0, instance:test.Test2048test@258e2e41]" started-at="2019-11-16T20:29:53Z" name="driver" finished-at="2019-11-16T20:30:07Z" duration-ms="14569" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- driver -->
+        <test-method signature="intialCheckTest()[pri:0, instance:test.Test2048test@258e2e41]" started-at="2019-11-16T20:30:07Z" name="intialCheckTest" finished-at="2019-11-16T20:30:08Z" duration-ms="266" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- intialCheckTest -->
+      </class> <!-- test.Test2048test -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
