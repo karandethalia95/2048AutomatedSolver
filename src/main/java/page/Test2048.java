@@ -45,24 +45,52 @@ public class Test2048 extends Base {
 		return initCheckBool;
 	}
 	
-	public int[][] loadArray() {
+	public int[][] loadArray() throws InterruptedException {
 		int[][] array2048 = new int[4][4];
+		Thread.sleep(1000);
 		int k = driver.findElements(By.xpath("//div[@class='tile-container']/div")).size();
+		System.out.println("Total tiles with some value:"+k);
 		for(int i=1;i<=k;i++) {
 			String position = driver.findElement(By.xpath("//div[@class='tile-container']/div["+i+"]")).getAttribute("class");
 			String value=position.substring(10, position.indexOf(" tile-position"));
 			int valueInt = Integer.parseInt(value);
-			char column = position.charAt(26);
-			int columnInt = Integer.parseInt(String.valueOf(column));
-			char row = position.charAt(28);
-			int rowInt=Integer.parseInt(String.valueOf(row));
-			array2048[rowInt-1][columnInt-1] = valueInt ;
+			if(valueInt==2 || valueInt==4 || valueInt==8) {
+				char column = position.charAt(26);
+				int columnInt = Integer.parseInt(String.valueOf(column));
+				char row = position.charAt(28);
+				int rowInt=Integer.parseInt(String.valueOf(row));
+				array2048[rowInt-1][columnInt-1] = valueInt ;
+			}
+			else if(valueInt==16 || valueInt==32 || valueInt==64) {
+				char column = position.charAt(27);
+				int columnInt = Integer.parseInt(String.valueOf(column));
+				char row = position.charAt(29);
+				int rowInt=Integer.parseInt(String.valueOf(row));
+				array2048[rowInt-1][columnInt-1] = valueInt ;
+			}
+			else if(valueInt==128 || valueInt==256 || valueInt==512) {
+				char column = position.charAt(28);
+				int columnInt = Integer.parseInt(String.valueOf(column));
+				char row = position.charAt(30);
+				int rowInt=Integer.parseInt(String.valueOf(row));
+				array2048[rowInt-1][columnInt-1] = valueInt ;
+			}
+			else {
+				char column = position.charAt(29);
+				int columnInt = Integer.parseInt(String.valueOf(column));
+				char row = position.charAt(31);
+				int rowInt=Integer.parseInt(String.valueOf(row));
+				array2048[rowInt-1][columnInt-1] = valueInt ;
+			}
+			
+			
+			//tile tile-16 tile-position-4-4 tile-merged
 		}
 		
-		int i = 1;int j = 1;
-		for(i=0;i<4;i++) {
-			for(j=0;j<4;j++) {
-					System.out.println("["+i+"]"+"["+j+"]="+array2048[i][j]);
+		int row = 1;int col = 1;
+		for(row=0;row<4;row++) {
+			for(col=0;col<4;col++) {
+					System.out.println("["+row+"]"+"["+col+"]="+array2048[row][col]);
 			}
 		}
 		
@@ -72,18 +100,22 @@ public class Test2048 extends Base {
 	
 	public void pressDown() {
 		gamePlay.sendKeys(Keys.DOWN);
+		System.out.println("Forced down");
 	}
 	
 	public void pressUp() {
 		gamePlay.sendKeys(Keys.UP);
+		System.out.println("Forced up");
 	}
 	
 	public void pressLeft() {
 		gamePlay.sendKeys(Keys.LEFT);
+		System.out.println("Forced left");
 	}
 	
 	public void pressRight() {
 		gamePlay.sendKeys(Keys.RIGHT);
+		System.out.println("Forced right");
 	}
 
 	
@@ -176,6 +208,20 @@ public class Test2048 extends Base {
 			}
 		}
 		return cantMove;
+	}
+	
+	public boolean gameOver() {
+		boolean gameOver=false;
+		try {
+			gameOver = driver.findElement(By.xpath("//div[@class='game-message game-over']")).isDisplayed();
+			if(gameOver) {
+				System.out.println("GAME OVER");
+			}
+		}
+		catch(Exception e){
+			System.out.println("Game not over ! Keep Playing !");
+		}
+		return gameOver;
 	}
 	
 	

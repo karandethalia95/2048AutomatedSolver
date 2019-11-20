@@ -19,65 +19,69 @@ public class Test2048test extends Base{
 	 
 	
 	@Test
-	public void intialCheckTest() {
+	public void intialCheckTest() throws InterruptedException {
 		Test2048 test = new Test2048();
 		boolean initCheckBool = test.intialCheck();
 		boolean cantMove = false;
+		boolean gameWon = false;
+		boolean gameOver = false;
 		if(initCheckBool == true)
-		System.out.println("All okay");
+		System.out.println("Game started fine");
 		else
-			System.out.println("Not okay");
+			System.out.println("Something wrong with the game start");
 		
 		int[][] gameArray = test.loadArray();
 		int[][] gameArrayPrevious;
 		
-		while(!cantMove) {
+		while(!gameWon && !gameOver) {
 			
 		boolean keyPress = test.checkNextStepVertical(gameArray);
 		if(keyPress) {
 			keyPress=test.checkNextStepHorizontal(gameArray);
 		}
 		else {
+			System.out.println("Down");
 			gameArray = test.loadArray();
+			gameWon = test.check2048(gameArray);
 			continue;
 		}
 		if(keyPress) {
 			gameArrayPrevious=gameArray;
-			test.pressDown();
-			gameArray = test.loadArray();
-			if(test.check2048(gameArray)) {
-				break;
-			}
+			test.pressUp();
+			gameArray = test.loadArray();	
 			cantMove=test.cantMove(gameArray, gameArrayPrevious);
 				if(cantMove) {
-					gameArrayPrevious=gameArray;
-					test.pressUp();
+					test.pressDown();
 					gameArray = test.loadArray();
-					if(test.check2048(gameArray)) {
-						break;
+					cantMove = test.cantMove(gameArray, gameArrayPrevious);
+					if(cantMove) {
+						test.pressRight();
+						gameArray = test.loadArray();
+						cantMove = test.cantMove(gameArray, gameArrayPrevious);
+						if(cantMove) {
+							test.pressLeft();
+							gameArray = test.loadArray();
+						}
+						else {
+							gameWon = test.check2048(gameArray);
+						}
+						
 					}
-					cantMove=test.cantMove(gameArray, gameArrayPrevious);
-				}
-				if(cantMove) {
-					gameArrayPrevious=gameArray;
-					test.pressRight();
-					gameArray = test.loadArray();
-					if(test.check2048(gameArray)) {
-						break;
+					else {
+						gameWon = test.check2048(gameArray);
 					}
-					cantMove=test.cantMove(gameArray, gameArrayPrevious);
 				}
-				if(cantMove) {
-					gameArrayPrevious=gameArray;
-					test.pressLeft();
-					gameArray = test.loadArray();
-					if(test.check2048(gameArray)) {
-						break;
-					}
-					cantMove=test.cantMove(gameArray, gameArrayPrevious);
-				}
+				else {
+					gameWon = test.check2048(gameArray);
+			}
 				
+		}else {
+			System.out.println("Right");
+			gameArray = test.loadArray();
+			gameWon = test.check2048(gameArray);
+			continue;
 		}
+		gameOver = test.gameOver();
 		
 	  }
 	}
