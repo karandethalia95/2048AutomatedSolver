@@ -3,7 +3,6 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -12,35 +11,60 @@ public class Test2048 extends Base {
 	@FindBy(xpath="//body")
 	WebElement gamePlay;
 	
+	@FindBy(xpath="//div[@class='score-container']")
+	WebElement score;
+	
+	@FindBy(xpath="//div[@class='best-container']")
+	WebElement bestScore;
+	
+	@FindBy(xpath="//div[h1]//a")
+	WebElement header2048;
+	
 	public Test2048() {
 		PageFactory.initElements(driver, this);
 	}
 	
+	public String titleHeaderValidation(String titleORHeader) {
+		String titleHeader;
+		if(titleORHeader=="title") {
+			titleHeader = driver.getTitle();
+			System.out.println(titleHeader);
+		}
+		else {
+			titleHeader = header2048.getText();
+			System.out.println(titleHeader);
+		}
+		
+		return titleHeader;
+		
+	}
 	public boolean intialCheck() {
 		boolean initCheckBool=false;
 		
 		//div[@class="grid-row"][1]//div[1]
 		
-		
-		WebElement init1 = driver.findElement(By.xpath("//div[@class='tile-container']/div[1]"));
-		WebElement init2 = driver.findElement(By.xpath("//div[@class='tile-container']/div[2]"));
-		
-		String pos1 = init1.getAttribute("class");
-		String pos2 = init2.getAttribute("class");
-		
-		
-		String value=pos1.substring(10, pos1.indexOf(" tile-position"));
-		char column = pos1.charAt(26);
-		int columnInt = Integer.parseInt(String.valueOf(column));
-		char row = pos1.charAt(28);
-		int rowInt=Integer.parseInt(String.valueOf(row));
-		System.out.println("Value at column "+(columnInt-1)+" & row "+(rowInt-1)+" is "+value);
-		
-		try {
-			driver.findElement(By.xpath("//div[@class='tile-container']/div[3]"));
+		for(int i=1;i<=2;i++) {
+			WebElement initTiles = driver.findElement(By.xpath("//div[@class='tile-container']/div["+i+"]"));
+			String position = initTiles.getAttribute("class");
+			String value=position.substring(10, position.indexOf(" tile-position"));
+			char column = position.charAt(26);
+			int columnInt = Integer.parseInt(String.valueOf(column));
+			char row = position.charAt(28);
+			int rowInt=Integer.parseInt(String.valueOf(row));
+			System.out.println("Value at column "+(columnInt-1)+" & row "+(rowInt-1)+" is "+value);
 		}
-		catch(Exception e){
-			initCheckBool = true;
+		
+		boolean scoreDisplayed = score.isDisplayed();
+		boolean bestScoreDisplayed = bestScore.isDisplayed();
+		
+		if(scoreDisplayed && bestScoreDisplayed) {
+			System.out.println("Score and Best Score Displayed");
+			try {
+				driver.findElement(By.xpath("//div[@class='tile-container']/div[3]"));
+			}
+			catch(Exception e){
+				initCheckBool = true;
+			}
 		}
 		return initCheckBool;
 	}

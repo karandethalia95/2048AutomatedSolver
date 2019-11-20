@@ -1,7 +1,6 @@
 package test;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -21,6 +20,13 @@ public class Test2048test extends Base{
 	@Test
 	public void intialCheckTest() throws InterruptedException {
 		Test2048 test = new Test2048();
+		
+		String title = test.titleHeaderValidation("title");
+		Assert.assertEquals(title,"2048 Game - Play 2048 Game Online");
+		
+		String header = test.titleHeaderValidation("header");
+		Assert.assertEquals(header,"2048");
+		
 		boolean initCheckBool = test.intialCheck();
 		boolean cantMove = false;
 		boolean gameWon = false;
